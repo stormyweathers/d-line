@@ -167,6 +167,7 @@ class transition():
     def compute_parameters(self):
         f=np.abs(self.final.center-self.initial.center)*1e6 # [Hz]
         omega=f/(2*pi) # [rad/s]
+        self.omega=omega
         self.wavelength=c/(f) ## wavelength in vacuum [m]
         self.k=2*pi/self.wavelength ## wavenumber in vacuum [cycles/m]
         self.linewidth=1/(self.final.lifetime*1e-9) ## [Hz]
@@ -175,9 +176,8 @@ class transition():
         self.Er=hbar**2*self.k**2/(2*self.mass *hbar) ## recoil energy [Hz]
         self.Tr=hbar**2*self.k**2/(self.mass*kB) ## recoil temperature [K]
         self.TD=hbar*self.linewidth/(2*kB) ## Doppler temperature [K]
-        self.Isat=hbar*omega**3*self.linewidth/(12*pi*c**2) ## saturation intensity [W/m^2]
-        self.scat=h*f*self.linewidth/(2*self.Isat) ## scattering cross-section [m^2]
-        self.scat=3*self.wavelength**2/(2*pi) ## scattering cross-section [m^2]
+        self.Isat=hbar*omega**3*self.linewidth/(12*pi*c**2) ## saturation intensity [W/m^2] (steck eq 61)
+        self.scat=3*self.wavelength**2/(2*pi) ## scattering cross-section [m^2] (steck eq 62)
 
 
         self.a= h *pi*self.linewidth/(2*pi*self.mass*self.wavelength) ## acceleration scale for doppler cooling/MOT [m/s^2]
@@ -187,7 +187,7 @@ class transition():
         return
     def print_parameters(self):
         print("wavelength: {:0.3f} nm".format(self.wavelength*1e9))
-        print("wavenumber: {:0.3f} /um".format(self.k*1e-6))
+        print("wavenumber: {:0.3f} /um".format(self.k/(2*pi)*1e-6))
         print("linewidth: 2*pi {:0.3f} MHz".format(self.linewidth*1e-6/(2*pi)))
         print("recoil velocity: {:0.3f} mm/s".format(self.vr*1e3))
         print("recoil energy: 2*pi {:0.3f} kHz".format(self.Er*1e-3/(2*pi)))
