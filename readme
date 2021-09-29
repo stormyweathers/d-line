@@ -1,0 +1,6 @@
+This is a python class based on Daniel Steck's alkali metal D-line data
+I had to look up data from these papers almost daily, so I made instead.
+
+So far, I've only added data for the D1 and D2 lines of Cs, Rb87
+I'll probably add Sodium/Rb85 eventually.
+I don't use these atoms, but sometimes I'm a completionist
